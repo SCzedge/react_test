@@ -1,17 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, Route, Switch, BrowserRouter as Router } from 'react-router-dom';
+
+import { signIn } from './Auth';
+import AuthRoute from './AuthRoute';
 
 import Home from './Home';
 import About from './About';
-import NotFound from './notFound';
-import AuthRoute from './authRoute';
-
+import Profile from './Profile';
+import NotFound from './NotFound';
+import LoginForm from './LoginForm';
+import LogoutButton from './LogoutButton';
 
 
 export default function App() {
   const [user,setUser] = useState(null);
   const authenticated = user != null;
-  const login =({email,apssword}) => setUser(signIn({email,password}));
+
+  const login =({email,password}) => setUser(signIn({email,password}));
   const logout =() => setUser(null);
 
   return (
@@ -26,19 +31,31 @@ export default function App() {
         <Link to ="/profile">
           <button>profile</button>
         </Link>
+        {authenticated ? (
+          <LogoutButton logout={logout} />
+        ) : (
+          <Link to="/login">
+            <button>Login</button>
+          </Link>
+        )}
       </header>
       <hr/>
       <main>
         <Switch>
           <Route exact path='/' component={Home}/>
           <Route path='/about' component={About}/>
-          <Route path='/profile' component={Profile}/>
-          <Route Component={NotFound}/>
+          <Route
+            path="/login"
+            render={props => (
+              <LoginForm authenticated={authenticated} login={login} {...props} />
+            )}
+          />
           <AuthRoute
           authenticated={authenticated}
           path ='/profile'
           render = { props => <Profile user = { user} {...props}/>}
           />
+          <Route Component={NotFound}/>
         </Switch>
       </main>
     </Router>

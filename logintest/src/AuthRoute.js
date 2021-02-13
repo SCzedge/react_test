@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-export default function AuthRoute({ autenticated, component: Component, render, ...rest }) {
+export default function AuthRoute({ authenticated, component: Component, render, ...rest }) {
   return (
     <Route
       {...rest}
@@ -13,7 +13,7 @@ export default function AuthRoute({ autenticated, component: Component, render, 
             <Component {...props} />
           )
         ) : (
-          <redirect
+          <Redirect
             to={{ pathname: '/login', state: { from: props.location } }}
           />
         )
