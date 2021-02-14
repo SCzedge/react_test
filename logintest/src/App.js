@@ -11,53 +11,56 @@ import NotFound from './NotFound';
 import LoginForm from './LoginForm';
 import LogoutButton from './LogoutButton';
 
-
 export default function App() {
-  const [user,setUser] = useState(null);
+  const [user, setUser] = useState(null);
   const authenticated = user != null;
 
-  const login =({email,password}) => setUser(signIn({email,password}));
-  const logout =() => setUser(null);
+  const login = ({ email, password }) => setUser(signIn({ email, password }));
+  const logout = () => setUser(null);
 
   return (
     <Router>
       <header>
-        <Link to ="/">
+        <Link to='/'>
           <button>home</button>
         </Link>
-        <Link to ="/about">
+        <Link to='/about'>
           <button>about</button>
         </Link>
-        <Link to ="/profile">
+        <Link to='/profile'>
           <button>profile</button>
         </Link>
         {authenticated ? (
           <LogoutButton logout={logout} />
         ) : (
-          <Link to="/login">
+          <Link to='/login'>
             <button>Login</button>
           </Link>
         )}
       </header>
-      <hr/>
+      <hr />
       <main>
         <Switch>
-          <Route exact path='/' component={Home}/>
-          <Route path='/about' component={About}/>
+          <Route exact path='/' component={Home} />
+          <Route path='/about' component={About} />
           <Route
-            path="/login"
-            render={props => (
-              <LoginForm authenticated={authenticated} login={login} {...props} />
+            path='/login'
+            render={(props) => (
+              <LoginForm
+                authenticated={authenticated}
+                login={login}
+                {...props}
+              />
             )}
           />
           <AuthRoute
-          authenticated={authenticated}
-          path ='/profile'
-          render = { props => <Profile user = { user} {...props}/>}
+            authenticated={authenticated}
+            path='/profile'
+            render={(props) => <Profile user={user} {...props} />}
           />
-          <Route Component={NotFound}/>
+          <Route Component={NotFound} />
         </Switch>
       </main>
     </Router>
-  )
+  );
 }
