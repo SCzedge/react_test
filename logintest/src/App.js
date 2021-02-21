@@ -38,7 +38,11 @@ export default function App() {
           </Link>
         )}
       </header>
+
+      
       <hr />
+
+
       <main>
         <Switch>
           <Route exact path='/' component={Home} />
